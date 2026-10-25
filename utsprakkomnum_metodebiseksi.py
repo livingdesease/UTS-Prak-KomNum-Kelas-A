@@ -1,5 +1,4 @@
-# Anggota 1 — import, evaluator fungsi, dan hitung_f()
-# Salin kode di bawah ini ke file kalkulator_metode_biseksi_ui.py.
+# Anggota 1 (Mellani Sofie) — import, evaluator fungsi, dan hitung_f()
 
 import tkinter as tk
 from tkinter import ttk, messagebox
