@@ -1,4 +1,4 @@
-# Anggota 1 (Mellani Sofie) — import, evaluator fungsi, dan hitung_f()
+    # Anggota 1 (Mellani Sofie) — import, evaluator fungsi, dan hitung_f()
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -61,3 +61,20 @@ def hitung_f(rumus, x):
     if not math.isfinite(float(hasil)):
         raise ValueError(f"Nilai fungsi tidak valid pada x = {x}.")
     return float(hasil)
+
+# Anggota 2 (Muhammad Khishal Ardana) — fungsi metode_biseksi()
+
+
+def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
+    fa_awal = hitung_f(rumus, a)
+    fb_awal = hitung_f(rumus, b)
+
+    if fa_awal * fb_awal > 0:
+        raise ValueError(
+            "f(a) dan f(b) harus memiliki tanda yang berbeda, "
+            "atau salah satu batas harus merupakan akar.\\n"
+            f"Saat ini f(a) = {fa_awal:.6g} dan f(b) = {fb_awal:.6g}."
+        )
+
+    data = []
+    akar = None
