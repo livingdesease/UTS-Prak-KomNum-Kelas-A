@@ -120,3 +120,43 @@ def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
         )
 
     return akar, alasan, data
+
+# Anggota 3 (Hermanda Saputra) — class AplikasiBiseksi dan tampilan GUI
+
+
+class AplikasiBiseksi:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Kalkulator Metode Biseksi")
+        self.root.geometry("1120x720")
+        self.root.minsize(900, 600)
+        self.root.configure(bg="#F3F6FB")
+
+        style = ttk.Style()
+        try:
+            style.theme_use("clam")
+        except tk.TclError:
+            pass
+        style.configure("Treeview", rowheight=28, font=("Segoe UI", 10),
+                        background="white", fieldbackground="white")
+        style.configure("Treeview.Heading", font=("Segoe UI", 10, "bold"),
+                        background="#E6ECF5")
+        style.configure("TButton", font=("Segoe UI", 10, "bold"), padding=8)
+        style.configure("TEntry", padding=7)
+
+        header = tk.Frame(root, bg="#172554", padx=24, pady=20)
+        header.pack(fill="x")
+        tk.Label(header, text="KALKULATOR METODE BISEKSI", bg="#172554",
+                 fg="white", font=("Segoe UI", 20, "bold")).pack(anchor="w")
+        tk.Label(header, text="Metode numerik untuk mencari akar persamaan f(x) = 0",
+                 bg="#172554", fg="#CBD5E1", font=("Segoe UI", 10)).pack(anchor="w", pady=(4, 0))
+
+        body = tk.Frame(root, bg="#F3F6FB", padx=20, pady=16)
+        body.pack(fill="both", expand=True)
+
+        input_card = tk.Frame(body, bg="white", padx=18, pady=16,
+                              highlightbackground="#D9E2F0", highlightthickness=1)
+        input_card.pack(fill="x")
+        tk.Label(input_card, text="Input Perhitungan", bg="white", fg="#172554",
+                 font=("Segoe UI", 13, "bold")).grid(row=0, column=0, columnspan=5,
+                                                      sticky="w", pady=(0, 12))
