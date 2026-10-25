@@ -219,3 +219,9 @@ tk.Label(input_card,
         self.tree.pack(side="top", fill="both", expand=True)
         xscroll.pack(side="bottom", fill="x")
         yscroll.place(relx=1.0, rely=0, relheight=0.93, anchor="ne")
+
+def hitung(self):
+    try:
+        rumus = self.entries["rumus"].get().strip()
+        if not rumus:
+            raise ValueError("Fungsi f(x) tidak boleh kosong.")
