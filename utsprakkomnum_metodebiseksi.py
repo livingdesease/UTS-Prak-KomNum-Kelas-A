@@ -65,6 +65,7 @@ def hitung_f(rumus, x):
 # Anggota 2 (Muhammad Khishal Ardana) — fungsi metode_biseksi()
 
 
+
 def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
     fa_awal = hitung_f(rumus, a)
     fb_awal = hitung_f(rumus, b)
@@ -72,16 +73,14 @@ def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
     if fa_awal * fb_awal > 0:
         raise ValueError(
             "f(a) dan f(b) harus memiliki tanda yang berbeda, "
-            "atau salah satu batas harus merupakan akar.\\n"
+            "atau salah satu batas harus merupakan akar.\n"
             f"Saat ini f(a) = {fa_awal:.6g} dan f(b) = {fb_awal:.6g}."
         )
 
     data = []
     akar = None
 
-    # Selalu jalankan sebanyak N iterasi yang diminta pengguna.
-    # Toleransi dan akar eksak dicatat sebagai informasi, tetapi tidak
-    # menghentikan pengisian tabel sebelum jumlah iterasi terpenuhi.
+    # Jalankan iterasi sampai toleransi terpenuhi atau N tercapai.
     for i in range(1, iterasi_maks + 1):
         fa = hitung_f(rumus, a)
         fb = hitung_f(rumus, b)
@@ -92,27 +91,25 @@ def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
 
         data.append([i, a, b, fa, fb, xr, fxr, produk, selisih])
         akar = xr
-        
-        # Jika fxr tepat nol, tetap lanjutkan pengisian tabel sampai N.
-        # Interval berikutnya dipersempit dari sisi a agar iterasi berikut
-        # tetap dapat dihitung dan jumlah baris sesuai input.
+
+        # Jika fxr tepat nol, akar ditemukan dan iterasi dihentikan.
+        if fxr == 0:
+            alasan = f"Akar eksak ditemukan pada iterasi ke-{i}."
+            break
+
+        # Periksa apakah toleransi error sudah terpenuhi.
+        if selisih / 2 <= toleransi:
+            alasan = (
+                f"Toleransi error terpenuhi pada iterasi ke-{i} "
+                f"(estimasi error = {selisih / 2:.6g})."
+            )
+            break
+
+        # Persempit interval berdasarkan tanda fungsi.
         if produk < 0:
             b = xr
         else:
             a = xr
-
-    if any(row[6] == 0 for row in data):
-        iterasi_akar = next(row[0] for row in data if row[6] == 0)
-        alasan = (
-            f"Akar eksak ditemukan pada iterasi ke-{iterasi_akar}. "
-            f"Tabel tetap ditampilkan sampai N = {iterasi_maks}."
-        )
-    elif data[-1][8] < toleransi:
-        alasan = (
-            f"Toleransi error terpenuhi pada iterasi terakhir "
-            f"(|b-a| = {data[-1][8]:.6g} < {toleransi:g}). "
-            f"Tabel menampilkan N = {iterasi_maks} iterasi."
-        )
     else:
         alasan = (
             f"Seluruh {iterasi_maks} iterasi selesai. "
@@ -120,6 +117,7 @@ def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
         )
 
     return akar, alasan, data
+
 
 # Anggota 3 (Hermanda Saputra) — class AplikasiBiseksi dan tampilan GUI
 
@@ -228,6 +226,7 @@ class AplikasiBiseksi:
             rumus = self.entries["rumus"].get().strip()
             if not rumus:
                 raise ValueError("Fungsi f(x) tidak boleh kosong.")
+
             a = float(self.entries["a"].get())
             b = float(self.entries["b"].get())
             e = float(self.entries["e"].get())
@@ -236,33 +235,39 @@ class AplikasiBiseksi:
             if a >= b:
                 raise ValueError("Batas a harus lebih kecil daripada batas b.")
             if e <= 0:
-                akar, alasan, data = metode_biseksi(rumus, a, b, e, N)
+                raise ValueError("Toleransi error harus lebih besar dari 0.")
+            if N < 1:
+                raise ValueError("Iterasi maksimum harus minimal 1.")
 
+            akar, alasan, data = metode_biseksi(rumus, a, b, e, N)
+
+            # Bersihkan tabel hasil sebelumnya
             for item in self.tree.get_children():
                 self.tree.delete(item)
 
+            # Tampilkan tabel iterasi
             for row in data:
                 formatted = [row[0]] + [f"{v:.6f}" for v in row[1:]]
                 self.tree.insert("", "end", values=formatted)
 
+            # Tampilkan hasil perhitungan
             if akar is None:
                 self.result_label.config(text=alasan)
             else:
                 self.result_label.config(
                     text=f"Perkiraan akar (xr) = {akar:.8f}    |    "
-                        f"f(xr) = {hitung_f(rumus, akar):.8g}\n"
-                        f"Keterangan: {alasan}"
+                         f"f(xr) = {hitung_f(rumus, akar):.8g}\n"
+                         f"Keterangan: {alasan}"
                 )
-                raise ValueError("Toleransi error harus lebih besar dari 0.")
-            if N < 1:
-                raise ValueError("Iterasi maksimum harus minimal 1.")
 
         except (ValueError, SyntaxError, TypeError, ZeroDivisionError,
                 OverflowError, tk.TclError) as err:
-                messagebox.showerror("Input atau Perhitungan Tidak Valid", str(err)
-                )
+            messagebox.showerror(
+                "Input atau Perhitungan Tidak Valid", str(err)
+            )
         except Exception as err:
-                messagebox.showerror("Terjadi Kesalahan", str(err))
+            messagebox.showerror("Terjadi Kesalahan", str(err))
+
 
     def reset(self):
         for key, entry in self.entries.items():
