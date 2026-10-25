@@ -92,3 +92,11 @@ def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
 
         data.append([i, a, b, fa, fb, xr, fxr, produk, selisih])
         akar = xr
+        
+        # Jika fxr tepat nol, tetap lanjutkan pengisian tabel sampai N.
+        # Interval berikutnya dipersempit dari sisi a agar iterasi berikut
+        # tetap dapat dihitung dan jumlah baris sesuai input.
+        if produk < 0:
+            b = xr
+        else:
+            a = xr
