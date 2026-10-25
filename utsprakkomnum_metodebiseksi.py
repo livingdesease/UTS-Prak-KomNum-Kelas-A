@@ -220,8 +220,23 @@ tk.Label(input_card,
         xscroll.pack(side="bottom", fill="x")
         yscroll.place(relx=1.0, rely=0, relheight=0.93, anchor="ne")
 
+
+# Anggota 4 (Fitri Br Manik) — hitung(), reset(), dan menjalankan aplikasi
+
 def hitung(self):
     try:
         rumus = self.entries["rumus"].get().strip()
         if not rumus:
             raise ValueError("Fungsi f(x) tidak boleh kosong.")
+            
+a = float(self.entries["a"].get())
+b = float(self.entries["b"].get())
+e = float(self.entries["e"].get())
+N = int(self.entries["N"].get())
+
+if a >= b:
+    raise ValueError("Batas a harus lebih kecil daripada batas b.")
+if e <= 0:
+    raise ValueError("Toleransi error harus lebih besar dari 0.")
+if N < 1:
+    raise ValueError("Iterasi maksimum harus minimal 1.")
