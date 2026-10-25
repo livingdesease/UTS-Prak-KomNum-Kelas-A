@@ -180,3 +180,27 @@ self.entries = {}
             self.entries[key] = entry
             input_card.grid_columnconfigure(col, weight=2 if col == 0 else 1)
 
+tk.Label(input_card,
+                 text="Contoh fungsi: x^3 - x - 2  |  Fungsi yang didukung: sin, cos, tan, sqrt, log, exp, abs",
+                 bg="white", fg="#64748B", font=("Segoe UI", 9)).grid(
+                     row=2, column=0, columnspan=5, sticky="w", pady=(10, 0))
+
+        buttons = tk.Frame(body, bg="#F3F6FB")
+        buttons.pack(fill="x", pady=12)
+        ttk.Button(buttons, text="Hitung Biseksi", command=self.hitung).pack(side="left")
+        ttk.Button(buttons, text="Reset", command=self.reset).pack(side="left", padx=8)
+
+        self.result_card = tk.Frame(body, bg="#E0F2FE", padx=16, pady=12)
+        self.result_card.pack(fill="x", pady=(0, 12))
+        tk.Label(self.result_card, text="HASIL PERHITUNGAN", bg="#E0F2FE",
+                 fg="#075985", font=("Segoe UI", 9, "bold")).pack(anchor="w")
+        self.result_label = tk.Label(self.result_card,
+                                     text="Masukkan fungsi dan parameter, lalu klik Hitung Biseksi.",
+                                     bg="#E0F2FE", fg="#0F172A",
+                                     font=("Segoe UI", 11), justify="left", wraplength=1000)
+        self.result_label.pack(anchor="w", pady=(5, 0))
+
+        table_frame = tk.Frame(body, bg="white", padx=10, pady=10)
+        table_frame.pack(fill="both", expand=True)
+        tk.Label(table_frame, text="Tabel Iterasi", bg="white", fg="#172554",
+                 font=("Segoe UI", 12, "bold")).pack(anchor="w", pady=(0, 8))
