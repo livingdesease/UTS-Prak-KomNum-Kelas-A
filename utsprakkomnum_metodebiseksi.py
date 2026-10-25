@@ -237,6 +237,24 @@ N = int(self.entries["N"].get())
 if a >= b:
     raise ValueError("Batas a harus lebih kecil daripada batas b.")
 if e <= 0:
+
+akar, alasan, data = metode_biseksi(rumus, a, b, e, N)
+
+for item in self.tree.get_children():
+    self.tree.delete(item)
+
+for row in data:
+    formatted = [row[0]] + [f"{v:.6f}" for v in row[1:]]
+    self.tree.insert("", "end", values=formatted)
+
+if akar is None:
+    self.result_label.config(text=alasan)
+else:
+    self.result_label.config(
+        text=f"Perkiraan akar (xr) = {akar:.8f}    |    "
+             f"f(xr) = {hitung_f(rumus, akar):.8g}\n"
+             f"Keterangan: {alasan}"
+    )
     raise ValueError("Toleransi error harus lebih besar dari 0.")
 if N < 1:
     raise ValueError("Iterasi maksimum harus minimal 1.")
