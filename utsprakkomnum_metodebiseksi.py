@@ -258,3 +258,29 @@ else:
     raise ValueError("Toleransi error harus lebih besar dari 0.")
 if N < 1:
     raise ValueError("Iterasi maksimum harus minimal 1.")
+
+except (ValueError, SyntaxError, TypeError, ZeroDivisionError,
+        OverflowError, tk.TclError) as err:
+    messagebox.showerror(
+        "Input atau Perhitungan Tidak Valid", str(err)
+    )
+except Exception as err:
+    messagebox.showerror("Terjadi Kesalahan", str(err))
+
+def reset(self):
+    for key, entry in self.entries.items():
+        entry.delete(0, "end")
+        entry.insert(0, DEFAULT_INPUT[key])
+
+    for item in self.tree.get_children():
+        self.tree.delete(item)
+
+    self.result_label.config(
+        text="Masukkan fungsi dan parameter, lalu klik Hitung Biseksi."
+    )
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = AplikasiBiseksi(root)
+    root.mainloop()
