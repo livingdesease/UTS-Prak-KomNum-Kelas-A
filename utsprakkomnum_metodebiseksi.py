@@ -204,3 +204,18 @@ tk.Label(input_card,
         table_frame.pack(fill="both", expand=True)
         tk.Label(table_frame, text="Tabel Iterasi", bg="white", fg="#172554",
                  font=("Segoe UI", 12, "bold")).pack(anchor="w", pady=(0, 8))
+
+ columns = ("iterasi", "a", "b", "fa", "fb", "xr", "fxr", "produk", "selisih")
+        headings = ["Iterasi", "a", "b", "f(a)", "f(b)", "xr", "f(xr)",
+                    "f(xr) × f(a)", "|b-a|"]
+        self.tree = ttk.Treeview(table_frame, columns=columns, show="headings")
+        for col, heading in zip(columns, headings):
+            self.tree.heading(col, text=heading)
+            self.tree.column(col, width=105 if col != "iterasi" else 65,
+                             minwidth=55, anchor="center")
+        yscroll = ttk.Scrollbar(table_frame, orient="vertical", command=self.tree.yview)
+        xscroll = ttk.Scrollbar(table_frame, orient="horizontal", command=self.tree.xview)
+        self.tree.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
+        self.tree.pack(side="top", fill="both", expand=True)
+        xscroll.pack(side="bottom", fill="x")
+        yscroll.place(relx=1.0, rely=0, relheight=0.93, anchor="ne")
