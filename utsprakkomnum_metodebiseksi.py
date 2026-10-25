@@ -100,3 +100,23 @@ def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
             b = xr
         else:
             a = xr
+
+    if any(row[6] == 0 for row in data):
+        iterasi_akar = next(row[0] for row in data if row[6] == 0)
+        alasan = (
+            f"Akar eksak ditemukan pada iterasi ke-{iterasi_akar}. "
+            f"Tabel tetap ditampilkan sampai N = {iterasi_maks}."
+        )
+    elif data[-1][8] < toleransi:
+        alasan = (
+            f"Toleransi error terpenuhi pada iterasi terakhir "
+            f"(|b-a| = {data[-1][8]:.6g} < {toleransi:g}). "
+            f"Tabel menampilkan N = {iterasi_maks} iterasi."
+        )
+    else:
+        alasan = (
+            f"Seluruh {iterasi_maks} iterasi selesai. "
+            f"Toleransi error belum terpenuhi."
+        )
+
+    return akar, alasan, data
