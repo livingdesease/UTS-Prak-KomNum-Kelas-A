@@ -78,3 +78,17 @@ def metode_biseksi(rumus, a, b, toleransi, iterasi_maks):
 
     data = []
     akar = None
+
+    # Selalu jalankan sebanyak N iterasi yang diminta pengguna.
+    # Toleransi dan akar eksak dicatat sebagai informasi, tetapi tidak
+    # menghentikan pengisian tabel sebelum jumlah iterasi terpenuhi.
+    for i in range(1, iterasi_maks + 1):
+        fa = hitung_f(rumus, a)
+        fb = hitung_f(rumus, b)
+        xr = (a + b) / 2
+        fxr = hitung_f(rumus, xr)
+        produk = fxr * fa
+        selisih = abs(b - a)
+
+        data.append([i, a, b, fa, fb, xr, fxr, produk, selisih])
+        akar = xr
