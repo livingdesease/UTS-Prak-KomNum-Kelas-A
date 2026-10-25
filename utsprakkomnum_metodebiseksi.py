@@ -160,3 +160,23 @@ class AplikasiBiseksi:
         tk.Label(input_card, text="Input Perhitungan", bg="white", fg="#172554",
                  font=("Segoe UI", 13, "bold")).grid(row=0, column=0, columnspan=5,
                                                       sticky="w", pady=(0, 12))
+
+self.entries = {}
+        fields = [
+            ("Fungsi f(x)", "rumus", DEFAULT_INPUT["rumus"], 30),
+            ("Batas a", "a", DEFAULT_INPUT["a"], 12),
+            ("Batas b", "b", DEFAULT_INPUT["b"], 12),
+            ("Toleransi error", "e", DEFAULT_INPUT["e"], 12),
+            ("Iterasi maksimum (N)", "N", DEFAULT_INPUT["N"], 12),
+        ]
+        for col, (label, key, default, width) in enumerate(fields):
+            frame = tk.Frame(input_card, bg="white")
+            frame.grid(row=1, column=col, sticky="ew", padx=(0 if col == 0 else 10, 0))
+            tk.Label(frame, text=label, bg="white", fg="#475569",
+                     font=("Segoe UI", 9, "bold")).pack(anchor="w", pady=(0, 5))
+            entry = ttk.Entry(frame, width=width)
+            entry.insert(0, default)
+            entry.pack(fill="x")
+            self.entries[key] = entry
+            input_card.grid_columnconfigure(col, weight=2 if col == 0 else 1)
+
