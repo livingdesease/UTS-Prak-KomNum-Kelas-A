@@ -1,4 +1,4 @@
-    # Anggota 1 (Mellani Sofie) — import, evaluator fungsi, dan hitung_f()
+# Anggota 1 (Mellani Sofie) — import, evaluator fungsi, dan hitung_f()
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -161,7 +161,7 @@ class AplikasiBiseksi:
                  font=("Segoe UI", 13, "bold")).grid(row=0, column=0, columnspan=5,
                                                       sticky="w", pady=(0, 12))
 
-self.entries = {}
+        self.entries = {}
         fields = [
             ("Fungsi f(x)", "rumus", DEFAULT_INPUT["rumus"], 30),
             ("Batas a", "a", DEFAULT_INPUT["a"], 12),
@@ -180,7 +180,7 @@ self.entries = {}
             self.entries[key] = entry
             input_card.grid_columnconfigure(col, weight=2 if col == 0 else 1)
 
-tk.Label(input_card,
+        tk.Label(input_card,
                  text="Contoh fungsi: x^3 - x - 2  |  Fungsi yang didukung: sin, cos, tan, sqrt, log, exp, abs",
                  bg="white", fg="#64748B", font=("Segoe UI", 9)).grid(
                      row=2, column=0, columnspan=5, sticky="w", pady=(10, 0))
@@ -188,7 +188,7 @@ tk.Label(input_card,
         buttons = tk.Frame(body, bg="#F3F6FB")
         buttons.pack(fill="x", pady=12)
         ttk.Button(buttons, text="Hitung Biseksi", command=self.hitung).pack(side="left")
-        ttk.Button(buttons, text="Reset", command=self.reset).pack(side="left", padx=8)
+        ttk.Button(buttons, text="Reset", command = self.reset).pack(side="left", padx=8)
 
         self.result_card = tk.Frame(body, bg="#E0F2FE", padx=16, pady=12)
         self.result_card.pack(fill="x", pady=(0, 12))
@@ -205,7 +205,7 @@ tk.Label(input_card,
         tk.Label(table_frame, text="Tabel Iterasi", bg="white", fg="#172554",
                  font=("Segoe UI", 12, "bold")).pack(anchor="w", pady=(0, 8))
 
- columns = ("iterasi", "a", "b", "fa", "fb", "xr", "fxr", "produk", "selisih")
+        columns = ("iterasi", "a", "b", "fa", "fb", "xr", "fxr", "produk", "selisih")
         headings = ["Iterasi", "a", "b", "f(a)", "f(b)", "xr", "f(xr)",
                     "f(xr) × f(a)", "|b-a|"]
         self.tree = ttk.Treeview(table_frame, columns=columns, show="headings")
@@ -223,61 +223,58 @@ tk.Label(input_card,
 
 # Anggota 4 (Fitri Br Manik) — hitung(), reset(), dan menjalankan aplikasi
 
-def hitung(self):
-    try:
-        rumus = self.entries["rumus"].get().strip()
-        if not rumus:
-            raise ValueError("Fungsi f(x) tidak boleh kosong.")
-            
-a = float(self.entries["a"].get())
-b = float(self.entries["b"].get())
-e = float(self.entries["e"].get())
-N = int(self.entries["N"].get())
+    def hitung(self):
+        try:
+            rumus = self.entries["rumus"].get().strip()
+            if not rumus:
+                raise ValueError("Fungsi f(x) tidak boleh kosong.")
+            a = float(self.entries["a"].get())
+            b = float(self.entries["b"].get())
+            e = float(self.entries["e"].get())
+            N = int(self.entries["N"].get())
 
-if a >= b:
-    raise ValueError("Batas a harus lebih kecil daripada batas b.")
-if e <= 0:
+            if a >= b:
+                raise ValueError("Batas a harus lebih kecil daripada batas b.")
+            if e <= 0:
+                akar, alasan, data = metode_biseksi(rumus, a, b, e, N)
 
-akar, alasan, data = metode_biseksi(rumus, a, b, e, N)
+            for item in self.tree.get_children():
+                self.tree.delete(item)
 
-for item in self.tree.get_children():
-    self.tree.delete(item)
+            for row in data:
+                formatted = [row[0]] + [f"{v:.6f}" for v in row[1:]]
+                self.tree.insert("", "end", values=formatted)
 
-for row in data:
-    formatted = [row[0]] + [f"{v:.6f}" for v in row[1:]]
-    self.tree.insert("", "end", values=formatted)
+            if akar is None:
+                self.result_label.config(text=alasan)
+            else:
+                self.result_label.config(
+                    text=f"Perkiraan akar (xr) = {akar:.8f}    |    "
+                        f"f(xr) = {hitung_f(rumus, akar):.8g}\n"
+                        f"Keterangan: {alasan}"
+                )
+                raise ValueError("Toleransi error harus lebih besar dari 0.")
+            if N < 1:
+                raise ValueError("Iterasi maksimum harus minimal 1.")
 
-if akar is None:
-    self.result_label.config(text=alasan)
-else:
-    self.result_label.config(
-        text=f"Perkiraan akar (xr) = {akar:.8f}    |    "
-             f"f(xr) = {hitung_f(rumus, akar):.8g}\n"
-             f"Keterangan: {alasan}"
-    )
-    raise ValueError("Toleransi error harus lebih besar dari 0.")
-if N < 1:
-    raise ValueError("Iterasi maksimum harus minimal 1.")
+        except (ValueError, SyntaxError, TypeError, ZeroDivisionError,
+                OverflowError, tk.TclError) as err:
+                messagebox.showerror("Input atau Perhitungan Tidak Valid", str(err)
+                )
+        except Exception as err:
+                messagebox.showerror("Terjadi Kesalahan", str(err))
 
-except (ValueError, SyntaxError, TypeError, ZeroDivisionError,
-        OverflowError, tk.TclError) as err:
-    messagebox.showerror(
-        "Input atau Perhitungan Tidak Valid", str(err)
-    )
-except Exception as err:
-    messagebox.showerror("Terjadi Kesalahan", str(err))
+    def reset(self):
+        for key, entry in self.entries.items():
+            entry.delete(0, "end")
+            entry.insert(0, DEFAULT_INPUT[key])
 
-def reset(self):
-    for key, entry in self.entries.items():
-        entry.delete(0, "end")
-        entry.insert(0, DEFAULT_INPUT[key])
+        for item in self.tree.get_children():
+            self.tree.delete(item)
 
-    for item in self.tree.get_children():
-        self.tree.delete(item)
-
-    self.result_label.config(
-        text="Masukkan fungsi dan parameter, lalu klik Hitung Biseksi."
-    )
+        self.result_label.config(
+            text="Masukkan fungsi dan parameter, lalu klik Hitung Biseksi."
+        )
 
 
 if __name__ == "__main__":
