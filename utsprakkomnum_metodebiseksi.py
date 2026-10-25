@@ -40,7 +40,7 @@ def _eval_node(node, x):
         if node.id in _ALLOWED_CONSTS:
             return _ALLOWED_CONSTS[node.id]
         raise ValueError(f"Nama '{node.id}' tidak dikenal.")
-    
+    if isinstance(node, ast.BinOp) and type(node.op) in _ALLOWED_BINOPS:
         left = _eval_node(node.left, x)
         right = _eval_node(node.right, x)
         return _ALLOWED_BINOPS[type(node.op)](left, right)
